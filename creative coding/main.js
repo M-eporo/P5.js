@@ -1,6 +1,6 @@
 let papers = [];
 function setup() {
-    createCanvas(400, 700);
+    createCanvas(windowWidth, windowHeight);
     colorMode(HSB);
     angleMode(DEGREES);
     for(let i = 0; i < 300; i++) {
