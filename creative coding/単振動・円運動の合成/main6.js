@@ -1,5 +1,5 @@
 const n = 30;
-const k = 5;
+const k = 3;
 let baseRad, rx, ry;
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -14,19 +14,18 @@ function draw() {
     baseRad += 0.02;
     rx -= 0.4;
     ry += 0.4;
+    
 }
 
-function drawItem(){
+function drawItem() {
     const a = [];
     const b = [];
 
     for(let rad = 0; rad < TWO_PI; rad += TWO_PI / n) {
         const x = width / 4 + cos(baseRad + rad) * rx;
         const y = height / 2 + sin(baseRad + rad) * ry;
-
         circle(x, y, 10);
         circle(width - x, height - y, 10);
-
         a.push({x, y});
         b.push({x: width - x, y: height - y});
     }
@@ -35,11 +34,8 @@ function drawItem(){
         b.unshift(b.pop());
     }
 
-    push();
-    noFill();
-    stroke(50);
     for(let i = 0; i < a.length; i++) {
-        line(a[i].x, a[i].y, b[i].x, b[i].y)
+        line(a[i].x, a[i].y, b[i].x, b[i].y);
     }
-    pop();
+
 }
