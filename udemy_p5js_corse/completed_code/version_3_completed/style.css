@@ -1,0 +1,18 @@
+/* 共通の初期設定 => */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: #333;
+}
+
+#p5_section{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* <= 共通の初期設定 */

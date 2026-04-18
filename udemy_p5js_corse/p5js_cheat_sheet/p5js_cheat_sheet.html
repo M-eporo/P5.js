@@ -1,0 +1,1288 @@
+<html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>p5.js_cheat_sheet</title>
+	<style>
+		/* cspell:disable-file */
+		/* webkit printing magic: print all background colors */
+		html {
+			-webkit-print-color-adjust: exact;
+		}
+	
+		* {
+			box-sizing: border-box;
+			-webkit-print-color-adjust: exact;
+		}
+	
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #222;
+		}
+	
+		@media only screen {
+			body {
+				margin: 2em auto;
+				max-width: 900px;
+				color: #ed225d;
+			}
+		}
+	
+		body {
+			line-height: 1.5;
+			white-space: pre-wrap;
+		}
+	
+		a,
+		a.visited {
+			color: inherit;
+			text-decoration: underline;
+		}
+	
+		.pdf-relative-link-path {
+			font-size: 80%;
+			color: #444;
+		}
+	
+		h1,
+		h2,
+		h3 {
+			letter-spacing: -0.01em;
+			line-height: 1.2;
+			font-weight: 600;
+			margin-bottom: 0;
+		}
+	
+		.page-title {
+			font-size: 4rem;
+			font-weight: 700;
+			margin-top: 0;
+			margin-bottom: 0.75em;
+		}
+	
+		h1 {
+			font-size: 1.875rem;
+			margin-top: 1.875rem;
+		}
+	
+		h2 {
+			font-size: 1.5rem;
+			margin-top: 1.5rem;
+		}
+	
+		h3 {
+			font-size: 1.25rem;
+			margin-top: 1.25rem;
+		}
+	
+		.source {
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			padding: 1.5em;
+			word-break: break-all;
+		}
+	
+		.callout {
+			border-radius: 3px;
+			padding: 1rem;
+		}
+	
+		figure {
+			margin: 1.25em 0;
+			page-break-inside: avoid;
+		}
+	
+		figcaption {
+			opacity: 0.5;
+			font-size: 85%;
+			margin-top: 0.5em;
+		}
+	
+		mark {
+			background-color: transparent;
+		}
+	
+		.indented {
+			padding-left: 1.5em;
+		}
+	
+		hr {
+			background: transparent;
+			display: block;
+			width: 100%;
+			height: 1px;
+			visibility: visible;
+			border: none;
+			border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+		}
+	
+		img {
+			max-width: 100%;
+		}
+	
+		@media only print {
+			img {
+				max-height: 100vh;
+				object-fit: contain;
+			}
+		}
+	
+		@page {
+			margin: 1in;
+		}
+	
+		.collection-content {
+			font-size: 0.875rem;
+		}
+	
+		.column-list {
+			display: flex;
+			justify-content: space-between;
+		}
+	
+		.column {
+			padding: 0 1em;
+		}
+	
+		.column:first-child {
+			padding-left: 0;
+		}
+	
+		.column:last-child {
+			padding-right: 0;
+		}
+	
+		.table_of_contents-item {
+			display: block;
+			font-size: 0.875rem;
+			line-height: 1.3;
+			padding: 0.125rem;
+		}
+	
+		.table_of_contents-indent-1 {
+			margin-left: 1.5rem;
+		}
+	
+		.table_of_contents-indent-2 {
+			margin-left: 3rem;
+		}
+	
+		.table_of_contents-indent-3 {
+			margin-left: 4.5rem;
+		}
+	
+		.table_of_contents-link {
+			text-decoration: none;
+			opacity: 0.7;
+			border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+		}
+	
+		table,
+		th,
+		td {
+			border: 1px solid rgba(55, 53, 47, 0.09);
+			border-collapse: collapse;
+		}
+	
+		table {
+			border-left: none;
+			border-right: none;
+		}
+	
+		th,
+		td {
+			font-weight: normal;
+			padding: 0.25em 0.5em;
+			line-height: 1.5;
+			min-height: 1.5em;
+			text-align: left;
+		}
+	
+		th {
+			color: rgba(55, 53, 47, 0.6);
+		}
+	
+		ol,
+		ul {
+			margin: 0;
+			margin-block-start: 0.6em;
+			margin-block-end: 0.6em;
+		}
+	
+		li>ol:first-child,
+		li>ul:first-child {
+			margin-block-start: 0.6em;
+		}
+	
+		ul>li {
+			list-style: disc;
+		}
+	
+		ul.to-do-list {
+			padding-inline-start: 0;
+		}
+	
+		ul.to-do-list>li {
+			list-style: none;
+		}
+	
+		.to-do-children-checked {
+			text-decoration: line-through;
+			opacity: 0.375;
+		}
+	
+		ul.toggle>li {
+			list-style: none;
+		}
+	
+		ul {
+			padding-inline-start: 1.7em;
+		}
+	
+		ul>li {
+			padding-left: 0.1em;
+		}
+	
+		ol {
+			padding-inline-start: 1.6em;
+		}
+	
+		ol>li {
+			padding-left: 0.2em;
+		}
+	
+		.mono ol {
+			padding-inline-start: 2em;
+		}
+	
+		.mono ol>li {
+			text-indent: -0.4em;
+		}
+	
+		.toggle {
+			padding-inline-start: 0em;
+			list-style-type: none;
+		}
+	
+		/* Indent toggle children */
+		.toggle>li>details {
+			padding-left: 1.7em;
+		}
+	
+		.toggle>li>details>summary {
+			margin-left: -1.1em;
+			font-size: 1.4rem;
+		}
+	
+		.selected-value {
+			display: inline-block;
+			padding: 0 0.5em;
+			background: rgba(206, 205, 202, 0.5);
+			border-radius: 3px;
+			margin-right: 0.5em;
+			margin-top: 0.3em;
+			margin-bottom: 0.3em;
+			white-space: nowrap;
+		}
+	
+		.collection-title {
+			display: inline-block;
+			margin-right: 1em;
+		}
+	
+		.page-description {
+			margin-bottom: 2em;
+		}
+	
+		.simple-table {
+			margin-top: 1em;
+			font-size: 0.875rem;
+			empty-cells: show;
+		}
+	
+		.simple-table td {
+			height: 29px;
+			min-width: 120px;
+		}
+	
+		.simple-table th {
+			height: 29px;
+			min-width: 120px;
+		}
+	
+		.simple-table-header-color {
+			background: rgb(247, 246, 243);
+			color: black;
+		}
+	
+		.simple-table-header {
+			font-weight: 500;
+		}
+	
+		time {
+			opacity: 0.5;
+		}
+	
+		.icon {
+			display: inline-block;
+			max-width: 1.2em;
+			max-height: 1.2em;
+			text-decoration: none;
+			vertical-align: text-bottom;
+			margin-right: 0.5em;
+		}
+	
+		img.icon {
+			border-radius: 3px;
+		}
+	
+		.user-icon {
+			width: 1.5em;
+			height: 1.5em;
+			border-radius: 100%;
+			margin-right: 0.5rem;
+		}
+	
+		.user-icon-inner {
+			font-size: 0.8em;
+		}
+	
+		.text-icon {
+			border: 1px solid #000;
+			text-align: center;
+		}
+	
+		.page-cover-image {
+			display: block;
+			object-fit: cover;
+			width: 100%;
+			max-height: 30vh;
+		}
+	
+		.page-header-icon {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+		}
+	
+		.page-header-icon-with-cover {
+			margin-top: -0.72em;
+			margin-left: 0.07em;
+		}
+	
+		.page-header-icon img {
+			border-radius: 3px;
+		}
+	
+		.link-to-page {
+			margin: 1em 0;
+			padding: 0;
+			border: none;
+			font-weight: 500;
+		}
+	
+		p>.user {
+			opacity: 0.5;
+		}
+	
+		td>.user,
+		td>time {
+			white-space: nowrap;
+		}
+	
+		input[type="checkbox"] {
+			transform: scale(1.5);
+			margin-right: 0.6em;
+			vertical-align: middle;
+		}
+	
+		p {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+			font-size: 1.4rem;
+		}
+	
+		.image {
+			border: none;
+			margin: 1.5em 0;
+			padding: 0;
+			border-radius: 0;
+			text-align: center;
+		}
+	
+		.code,
+		code {
+			background: rgba(135, 131, 120, 0.15);
+			border-radius: 3px;
+			padding: 0.2em 0.4em;
+			border-radius: 3px;
+			font-size: 1.2rem;
+			tab-size: 2;
+		}
+	
+		code {
+			color: #eb5757;
+		}
+	
+		.code {
+			padding: 1.5em 1em;
+		}
+	
+		.code-wrap {
+			white-space: pre-wrap;
+			word-break: break-all;
+		}
+	
+		.code>code {
+			background: none;
+			padding: 0;
+			font-size: 100%;
+			color: inherit;
+		}
+	
+		blockquote {
+			font-size: 1.25em;
+			margin: 1em 0;
+			padding-left: 1em;
+			border-left: 3px solid rgb(55, 53, 47);
+		}
+	
+		.bookmark {
+			text-decoration: none;
+			max-height: 8em;
+			padding: 0;
+			display: flex;
+			width: 100%;
+			align-items: stretch;
+		}
+	
+		.bookmark-title {
+			font-size: 0.85em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			height: 1.75em;
+			white-space: nowrap;
+		}
+	
+		.bookmark-text {
+			display: flex;
+			flex-direction: column;
+		}
+	
+		.bookmark-info {
+			flex: 4 1 180px;
+			padding: 12px 14px 14px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+	
+		.bookmark-image {
+			width: 33%;
+			flex: 1 1 180px;
+			display: block;
+			position: relative;
+			object-fit: cover;
+			border-radius: 1px;
+		}
+	
+		.bookmark-description {
+			color: rgba(55, 53, 47, 0.6);
+			font-size: 0.75em;
+			overflow: hidden;
+			max-height: 4.5em;
+			word-break: break-word;
+		}
+	
+		.bookmark-href {
+			font-size: 0.75em;
+			margin-top: 0.25em;
+		}
+	
+		.sans {
+			font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+	
+		.code {
+			font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace;
+		}
+	
+		.serif {
+			font-family: Lyon-Text, Georgia, ui-serif, serif;
+		}
+	
+		.mono {
+			font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;
+		}
+	
+		.pdf .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP';
+		}
+	
+		.pdf:lang(zh-CN) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC';
+		}
+	
+		.pdf:lang(zh-TW) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC';
+		}
+	
+		.pdf:lang(ko-KR) .sans {
+			font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR';
+		}
+	
+		.pdf .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+		}
+	
+		.pdf:lang(zh-CN) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+		}
+	
+		.pdf:lang(zh-TW) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+		}
+	
+		.pdf:lang(ko-KR) .code {
+			font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+		}
+	
+		.pdf .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP';
+		}
+	
+		.pdf:lang(zh-CN) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC';
+		}
+	
+		.pdf:lang(zh-TW) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC';
+		}
+	
+		.pdf:lang(ko-KR) .serif {
+			font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR';
+		}
+	
+		.pdf .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP';
+		}
+	
+		.pdf:lang(zh-CN) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC';
+		}
+	
+		.pdf:lang(zh-TW) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC';
+		}
+	
+		.pdf:lang(ko-KR) .mono {
+			font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR';
+		}
+	
+		.highlight-default {
+			color: rgba(55, 53, 47, 1);
+		}
+	
+		.highlight-gray {
+			color: rgba(120, 119, 116, 1);
+			fill: rgba(120, 119, 116, 1);
+		}
+	
+		.highlight-brown {
+			color: rgba(159, 107, 83, 1);
+			fill: rgba(159, 107, 83, 1);
+		}
+	
+		.highlight-orange {
+			color: rgba(217, 115, 13, 1);
+			fill: rgba(217, 115, 13, 1);
+		}
+	
+		.highlight-yellow {
+			color: rgba(203, 145, 47, 1);
+			fill: rgba(203, 145, 47, 1);
+		}
+	
+		.highlight-teal {
+			color: rgba(68, 131, 97, 1);
+			fill: rgba(68, 131, 97, 1);
+		}
+	
+		.highlight-blue {
+			color: rgba(51, 126, 169, 1);
+			fill: rgba(51, 126, 169, 1);
+		}
+	
+		.highlight-purple {
+			color: rgba(144, 101, 176, 1);
+			fill: rgba(144, 101, 176, 1);
+		}
+	
+		.highlight-pink {
+			color: rgba(193, 76, 138, 1);
+			fill: rgba(193, 76, 138, 1);
+		}
+	
+		.highlight-red {
+			color: rgba(212, 76, 71, 1);
+			fill: rgba(212, 76, 71, 1);
+		}
+	
+		.highlight-gray_background {
+			background: rgba(241, 241, 239, 1);
+		}
+	
+		.highlight-brown_background {
+			background: rgba(244, 238, 238, 1);
+		}
+	
+		.highlight-orange_background {
+			background: rgba(251, 236, 221, 1);
+		}
+	
+		.highlight-yellow_background {
+			background: rgba(251, 243, 219, 1);
+		}
+	
+		.highlight-teal_background {
+			background: rgba(237, 243, 236, 1);
+		}
+	
+		.highlight-blue_background {
+			background: rgba(231, 243, 248, 1);
+		}
+	
+		.highlight-purple_background {
+			background: rgba(244, 240, 247, 0.8);
+		}
+	
+		.highlight-pink_background {
+			background: rgba(249, 238, 243, 0.8);
+		}
+	
+		.highlight-red_background {
+			background: rgba(253, 235, 236, 1);
+		}
+	
+		.block-color-default {
+			color: inherit;
+			fill: inherit;
+		}
+	
+		.block-color-gray {
+			color: rgba(120, 119, 116, 1);
+			fill: rgba(120, 119, 116, 1);
+		}
+	
+		.block-color-brown {
+			color: rgba(159, 107, 83, 1);
+			fill: rgba(159, 107, 83, 1);
+		}
+	
+		.block-color-orange {
+			color: rgba(217, 115, 13, 1);
+			fill: rgba(217, 115, 13, 1);
+		}
+	
+		.block-color-yellow {
+			color: rgba(203, 145, 47, 1);
+			fill: rgba(203, 145, 47, 1);
+		}
+	
+		.block-color-teal {
+			color: rgba(68, 131, 97, 1);
+			fill: rgba(68, 131, 97, 1);
+		}
+	
+		.block-color-blue {
+			color: rgba(51, 126, 169, 1);
+			fill: rgba(51, 126, 169, 1);
+		}
+	
+		.block-color-purple {
+			color: rgba(144, 101, 176, 1);
+			fill: rgba(144, 101, 176, 1);
+		}
+	
+		.block-color-pink {
+			color: rgba(193, 76, 138, 1);
+			fill: rgba(193, 76, 138, 1);
+		}
+	
+		.block-color-red {
+			color: rgba(212, 76, 71, 1);
+			fill: rgba(212, 76, 71, 1);
+		}
+	
+		.block-color-gray_background {
+			background: rgba(241, 241, 239, 1);
+		}
+	
+		.block-color-brown_background {
+			background: rgba(244, 238, 238, 1);
+		}
+	
+		.block-color-orange_background {
+			background: rgba(251, 236, 221, 1);
+		}
+	
+		.block-color-yellow_background {
+			background: rgba(251, 243, 219, 1);
+		}
+	
+		.block-color-teal_background {
+			background: rgba(237, 243, 236, 1);
+		}
+	
+		.block-color-blue_background {
+			background: rgba(231, 243, 248, 1);
+		}
+	
+		.block-color-purple_background {
+			background: rgba(244, 240, 247, 0.8);
+		}
+	
+		.block-color-pink_background {
+			background: rgba(249, 238, 243, 0.8);
+		}
+	
+		.block-color-red_background {
+			background: rgba(253, 235, 236, 1);
+		}
+	
+		.select-value-color-interactiveBlue {
+			background-color: rgba(35, 131, 226, .07);
+		}
+	
+		.select-value-color-pink {
+			background-color: rgba(245, 224, 233, 1);
+		}
+	
+		.select-value-color-purple {
+			background-color: rgba(232, 222, 238, 1);
+		}
+	
+		.select-value-color-green {
+			background-color: rgba(219, 237, 219, 1);
+		}
+	
+		.select-value-color-gray {
+			background-color: rgba(227, 226, 224, 1);
+		}
+	
+		.select-value-color-translucentGray {
+			background-color: rgba(255, 255, 255, 0.0375);
+		}
+	
+		.select-value-color-orange {
+			background-color: rgba(250, 222, 201, 1);
+		}
+	
+		.select-value-color-brown {
+			background-color: rgba(238, 224, 218, 1);
+		}
+	
+		.select-value-color-red {
+			background-color: rgba(255, 226, 221, 1);
+		}
+	
+		.select-value-color-yellow {
+			background-color: rgba(253, 236, 200, 1);
+		}
+	
+		.select-value-color-blue {
+			background-color: rgba(211, 229, 239, 1);
+		}
+	
+		.select-value-color-pageGlass {
+			background-color: undefined;
+		}
+	
+		.select-value-color-washGlass {
+			background-color: undefined;
+		}
+	
+		.checkbox {
+			display: inline-flex;
+			vertical-align: text-bottom;
+			width: 16;
+			height: 16;
+			background-size: 16px;
+			margin-left: 2px;
+			margin-right: 5px;
+		}
+	
+		.checkbox-on {
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+		}
+	
+		.checkbox-off {
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+		}
+	</style></head><body><article id="af2540a2-32fc-4eda-b3c3-0e63e7c08f15" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🅿️</span></div><h1 class="page-title">p5.js_cheat_sheet_updated</h1><p class="page-description"></p></header><div class="page-body"><p id="ffafa595-a579-45cf-8fad-20036f91d8e3" class="">p5.js website   <a href="https://p5js.org/">https://p5js.org/</a>
+openprocessing website   <a href="https://openprocessing.org/">https://openprocessing.org/</a>  </p><ul id="ca061843-5f15-4001-ba79-35c7ab7c2ea3" class="toggle"><li><details><summary>Template</summary><ul id="dc5add40-c3fb-4993-9931-19e985a456a9" class="toggle"><li><details><summary>HTML</summary><pre id="4027c1cf-4621-421d-a1fb-33e9b2dec6ff" class="code code-wrap"><code>&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+    &lt;!-- cdn: content delivery networkを用いる、もしくはp5.min.jsかp5.jsをscriptタグで読み込む--&gt;
+    &lt;script src=&quot;./p5.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./p5.sound.min.js&quot;&gt;&gt;
+    &lt;script src=&quot;./particle.js&quot;&gt;&lt;/script&gt;
+    &lt;!-- type=&#x27;module&#x27;、importを使った場合p5.jsが機能しなくなるため避ける --&gt;
+    &lt;!-- 変数名の重複には注意 --&gt;
+    &lt;script src=&quot;./index.js&quot;&gt;&lt;/script&gt;
+    &lt;title&gt;p5.js Project&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;section id=&quot;p5_section&quot;&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre></details></li></ul><ul id="0e4303a9-bc2e-4553-acd4-bf8a167aedf2" class="toggle"><li><details><summary>CSS</summary><pre id="31ba7814-c6e6-446e-beaf-afe7a81d857d" class="code code-wrap"><code>/* 共通の初期設定 =&gt; */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: #333;
+}
+
+#p5_section{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* &lt;= 共通の初期設定 */</code></pre></details></li></ul><ul id="a2600c7f-2140-4c2a-849c-256d35c81413" class="toggle"><li><details><summary>JS</summary><pre id="f7106755-09f4-4ed4-9b78-b54b5ce588c7" class="code code-wrap"><code>let canvas;
+let img, sound;
+
+function preload() {   // 画像ファイルや音声ファイルのプレロード
+    img = loadImage(&#x27;./something.png&#x27;);
+}
+
+function windowResized() {   // リサイズイベントへの対応
+    setup();
+}
+
+function setup() {   // 初期化。一度だけ実行される
+    frameRate(30);   // 1秒間に表示されるフレーム数を指定(デフォルトで60)
+    canvas = createCanvas(windowWidth*9/10, windowHeight*9/10);   // p5.js用のキャンバスを作成
+    p5Canvas.parent(&#x27;p5_section&#x27;);   // canvasをhtmlファイル内の section#&#x27;p5_section&#x27; の子要素に指定
+    background(100);
+}
+
+function draw() {   // frameRateの頻度で上書き描画
+    background(100);   // 色については別項目を参照
+}</code></pre></details></li></ul></details></li></ul><ul id="d0fd6c77-15ff-4e1a-ad6b-7ea5ce6f9b4f" class="toggle"><li><details><summary>draw()の設定</summary><ul id="8506f043-b278-4b09-b8b2-eeb39a6f7c2e" class="toggle"><li><details><summary>フレームレート</summary><pre id="6c71266b-a24d-4c26-b9c1-35d5da81c3bb" class="code code-wrap"><code>function setup(){
+	//
+	frameRate(30);   // 1秒間に30回フレームが切り替わる（drawが実行される）
+}</code></pre></details></li></ul><ul id="fb191ebc-5732-4e14-a968-2d18550b67be" class="toggle"><li><details><summary>ループの制御[loop(), noLoop(), redraw()]</summary><ul id="4ad96bd7-3dad-42f4-8af8-065deae12a37" class="toggle"><li><details><summary>1度のみdraw()を実行</summary><pre id="17443693-ed28-432b-a14f-945a93e33c1b" class="code code-wrap"><code>function setup() {
+    //
+    noLoop();   // draw()を1度実行して停止
+}</code></pre></details></li></ul><ul id="e73ce69b-dd3a-45a5-94d4-89075ead921a" class="toggle"><li><details><summary>一定時間後に停止</summary><pre id="5bd464d6-56ed-41a9-9aab-19d8462f5a28" class="code code-wrap"><code>function draw() {
+    // 
+    if(120 &lt; frameCount){
+        noLoop();
+    };
+}</code></pre></details></li></ul><ul id="fbcabb1f-07cd-48a7-bd11-f3a55d519ac7" class="toggle"><li><details><summary>クリックによるコマ送りの例</summary><pre id="24ae44c2-f761-4d00-a434-f770a4791a1c" class="code code-wrap"><code>function mousePressed() {   // マウスクリックイベントリスナー
+    //
+    redraw();   // 1度draw()を実行
+}</code></pre></details></li></ul><ul id="dbdac255-6476-40dd-bd3c-abc17c3bdaee" class="toggle"><li><details><summary>マウスプレス・リリースによるループの切り替えの例</summary><pre id="d5817827-6644-47b6-88cf-951f609cd842" class="code code-wrap"><code>function mousePressed() { // 停止
+    noLoop();
+}
+function mouseReleased() { // 再開
+    loop();
+}</code></pre></details></li></ul></details></li></ul></details></li></ul><ul id="99574ea2-c642-4668-a599-7e0ea516c615" class="toggle"><li><details><summary>システム変数</summary><ul id="a42b9759-dfe1-4bb2-8ef1-3f93d066d7db" class="toggle"><li><details><summary>幅や高さ</summary><pre id="7304c9d5-e1a4-42da-bc3a-1bb8ec302312" class="code code-wrap"><code>windowWidth, windowHeight
+
+width, height // canvasの幅、高さ
+
+displayWidth, displayHeight // ディスプレイの幅、高さ</code></pre></details></li></ul><ul id="35e345bf-3046-4f64-8992-703678a35bbf" class="toggle"><li><details><summary>フレームカウント、時間関連</summary><pre id="02d041c7-5471-4f9a-9fd3-5ddb66dfabfa" class="code code-wrap"><code>frameCount // その時点までのフレームカウント
+
+deltaTime // フレームが更新される時間(30fpsの場合ならば、1/30秒)</code></pre></details></li></ul><ul id="1e88a05d-2d12-4977-9387-a3408ab10a4d" class="toggle"><li><details><summary>マウスポジション</summary><ul id="5026b218-7148-46c7-bf2f-be5b7f6f8571" class="toggle"><li><details><summary>単純なマウスのポジション</summary><pre id="368c8b8a-c91c-4d60-b336-3339f7ba8d48" class="code"><code>mouseX
+mouseY</code></pre></details></li></ul><ul id="5e4fcb89-903d-4c8c-9bc0-65ea0618aedf" class="toggle"><li><details><summary>1フレーム前のマウスのポジション</summary><pre id="0644f4b4-213c-4ef5-a1a3-024b08b795e2" class="code"><code>pmouseX
+pmouseY
+// line(pmouseX, pmouseY, mouseX, mouseY)で途切れのない線描が可能</code></pre></details></li></ul><ul id="9b022274-f78f-4eb6-978b-3ffd03b38b78" class="toggle"><li><details><summary>Windowに対するマウスのポジション</summary><pre id="3f62504e-c66a-427d-aa26-8e9809ae1735" class="code"><code>winMouseX
+winMouseY</code></pre></details></li></ul><ul id="412839af-1e16-4a44-b4b2-56b4c63df1d3" class="toggle"><li><details><summary>Windowに対する1フレーム前のマウスのポジション</summary><pre id="4370e26f-2091-4aca-b487-764b684a1850" class="code"><code>pwinMouseX
+pwinMouseY</code></pre></details></li></ul></details></li></ul></details></li></ul><ul id="3ced66b6-a20e-43cb-906d-b43576644271" class="toggle"><li><details><summary>モード設定の保存、復元</summary><pre id="2a6d839b-cf85-43a5-b75f-4d6474397132" class="code code-wrap"><code>push();
+// fill(&quot;#ff0&quot;), noStroke(), imageMode(CENTER), colorMode(RGB), ellipseMode(CORNER)など
+// transformationのtranslateやscaleなど
+
+pop();   // pop()によりpush()以降の設定は解除され、push()以前の設定に復元される</code></pre></details></li></ul><ul id="a0bca58a-1792-4aa1-b764-1a25939214aa" class="toggle"><li><details><summary>図形描画に関する設定（カラー、切り抜き、塗りつぶし、線の幅など）</summary><ul id="8705b3c2-011b-4781-9bad-75d6de930480" class="toggle"><li><details><summary>カラー</summary><ul id="840bcca4-ba14-41b5-9e1e-253e55af0238" class="toggle"><li><details><summary>モード</summary><pre id="205edb29-490c-4686-b51b-eb8461ac88ad" class="code code-wrap"><code>colorMode(MODE); // MODEの種類はRGB、HSB(HSL)
+colorMode(MODE, max1, max2, max3, [maxA]) // 設定数値の最大値を指定することも可能
+
+colorMode(RGB, 255, 255, 255, 1);
+colorMode(HSB, 360, 100, 100, 100);</code></pre></details></li></ul><ul id="3f7b5047-6329-4316-a134-4a944ff9035e" class="toggle"><li><details><summary>カラーの作成[color()]</summary><pre id="648e85b3-a898-4505-9464-28bc35cc9988" class="code code-wrap"><code>color(50, 100, 150, 0.5);   // colorMode(RGB, 255, 255, 255, 1)の設定の場合
+color(&quot;#3399aa&quot;) or color(&quot;#39a&quot;);   // 16進数、ヘキサデシマル
+color(&quot;rgba(100, 200, 255, 0.8)&quot;); or color(&quot;rgba(50%, 20%, 30%, 0.5)&quot;);   // &quot;rgba()&quot;, &quot;rgb()&quot;でも可
+color(&quot;red&quot;)   // その他&quot;green&quot;など
+
+const newColor = color(&quot;#f00&quot;);
+newColor.setAlpha(0.5);   // alphaを追加指定。const newColor = color(&quot;#f00&quot;).setAlpha(0.5)のようなチェインは不可</code></pre></details></li></ul><ul id="1158f4d9-4cda-4ba9-bae9-a2d7c319a95e" class="toggle"><li><details><summary>2色の中間色などを抽出[lerpColor()]</summary><pre id="81ebec8c-efb0-44e2-a879-1bb46b9c6efe" class="code code-wrap"><code>const from = color(&quot;red&quot;);
+const to = color(&quot;blue&quot;);
+const colorA = lerpColor(from, to, 3/10);   // fromからtoに移行する3/10地点の色</code></pre></details></li></ul></details></li></ul><ul id="e8b3b6f0-3ac0-46d3-bcf9-b45865ddfae3" class="toggle"><li><details><summary>切り抜き、透明化　</summary><pre id="aa40c41b-e187-4519-a617-4f2bdb8ebb6a" class="code code-wrap"><code>// erase([strengthFill], [strengthStroke])
+
+// shape1を描画   // 画面奥の図形
+erase();   // erase(255, 255)に等しい。数値を下げると透明化
+// shape2を描画;   // 画面手前の図形
+noErase();
+// 背景とshape1のshape2部分を切り抜き[erase(), noErase()]
+// shape2部分はbodyの色になる</code></pre></details></li></ul><ul id="ca25b081-cb0e-4942-b2ed-014f19677324" class="toggle"><li><details><summary>colorMode(HSL)を利用したランダムカラーの作成例</summary><pre id="bf4ddd33-edfc-4320-a2ad-cef022fe29b4" class="code code-wrap"><code>colorMode(HSL); // 360, 100, 100, 1
+let colour = [floor(random()*360), 100, 50];
+stroke(colour);</code></pre></details></li></ul><ul id="beaf0223-8685-48c1-aae5-c052970f7552" class="toggle"><li><details><summary>塗りつぶし</summary><pre id="e35778e9-e4f9-46f5-a658-781796fff136" class="code code-wrap"><code>fill(COLOR);   // 円や矩形の内部をCOLORで塗りつぶす指定
+
+noFill();   // 円や矩形の内部を塗りつぶさない</code></pre></details></li></ul><ul id="cfedbc70-5336-4f38-b7ef-506651f18ab4" class="toggle"><li><details><summary>線、外周線</summary><pre id="149f6ade-0002-4de8-9cd7-4aa8f3c229c4" class="code code-wrap"><code>stroke(COLOR);   // 線、外周線をCOLORに
+noStroke();   // 線、外周線を描画しない
+strokeWeight(20);   // 線、外周線の太さ
+strokeCap(ROUND);   // 線、外周線の末端の形状を指定。SQUARE, PROJECT
+strokeJoin(MITER);   // 線、外周線の連結の形状を指定。BEVEL, ROUND</code></pre></details></li></ul></details></li></ul><ul id="60d27784-b206-4320-9a27-23530710daa6" class="toggle"><li><details><summary>背景、基本図形</summary><ul id="a9fb96c4-4e2c-4a6b-8583-1f986ce8caba" class="toggle"><li><details><summary>頂点を指定して直線でつなぐ</summary><pre id="33c5f033-fae3-4c40-b36c-3a1d40df95b3" class="code code-wrap"><code>beginShape();
+	vertex(x0, y0);   // 頂点を定める
+	// ...
+	vertex(x10, y10);
+endShape();   // endShape(CLOSE)の場合は始点と終点をつなぐ</code></pre><pre id="93d315af-0ebd-4c23-a070-fa684a5693bc" class="code code-wrap"><code>// 詳しい実例は　=&gt; https://p5js.org/reference/#/p5/beginShape
+
+// beginShape(SHAPE)
+	// POINTS ：Draw a series of points
+	// LINES ：Draw a series of unconnected line segments (individual lines)
+	// TRIANGLES ：Draw a series of separate triangles
+	// TRIANGLE_FAN ：Draw a series of connected triangles sharing the first vertex in a fan-like fashion
+	// TRIANGLE_STRIP ：Draw a series of connected triangles in strip fashion
+	// QUADS ：Draw a series of separate quad
+	// QUAD_STRIP ：Draw quad strip using adjacent edges to form the next quad</code></pre></details></li></ul><ul id="50f43cee-0c51-41d0-9e28-0e71dbf1e3c1" class="toggle"><li><details><summary>背景</summary><pre id="dd8ee739-5e6a-4a9d-99d1-b3ce281ff263" class="code code-wrap"><code>bac kground(COLOR);
+background(IMAGE);   // IMAGEはロードしたイメージファイル</code></pre><pre id="2bd44762-e861-4877-abe6-92b8fe5b2faa" class="code code-wrap"><code>// 背景の描画を利用して残像を残す
+background(COLOR, 0.2);   // 背景の塗りつぶしにアルファを適用することで、その他の図形の以前の姿が残り残像となる</code></pre></details></li></ul><ul id="4c23e260-85f6-4171-bafb-e4f157ac330d" class="toggle"><li><details><summary>円、楕円、円弧</summary><ul id="17a8d648-8a03-4185-abf2-95d6ab1c0659" class="toggle"><li><details><summary>モード</summary><pre id="c7268f3a-63b5-44da-92da-7338ab3cbac0" class="code code-wrap"><code>ellipseMode(MODE);   // MODEには以下のものを設定。デフォルトはCENTER
+// CENTER: cx, cy, halfW, halfH
+// RADIUS: cx, cy, halfW, halfH
+// CORNER: upperLeftX, upperLeftY, w, h
+// CORNERS: upperLeftX, upperLeftY, bottomRightX, bottomRightY</code></pre></details></li></ul><ul id="111615b2-8011-4cdd-9017-bdee3e5c2d6e" class="toggle"><li><details><summary>円[ellipse(cX, cY, w, h]</summary><pre id="2f13033f-9385-4d75-9ad4-085d41836ab4" class="code code-wrap"><code>// ellipseMode(MODE)を使って円、楕円を描く
+
+ellipseMode();   // デフォルトのCENTER
+ellipse(100, 100, 60, 30);</code></pre></details></li></ul><ul id="97d5454b-f9cb-4291-8781-c45fa79ea048" class="toggle"><li><details><summary>円[circle(cX, cY, diameter)]</summary><pre id="a244b911-7f45-4abe-a17e-1edf92132bfe" class="code code-wrap"><code>circle(100, 100, 20);   // 半径は10</code></pre></details></li></ul><ul id="22de36b6-c355-47db-aa68-76794ec2436b" class="toggle"><li><details><summary>円弧、円の一部[arc(cX, cY, w, h, startAngle, stopAngle, MODE)]</summary><pre id="0711420d-5371-48ec-be19-2ad47d735549" class="code code-wrap"><code>arc(50, 100, 30, 40, HALF_PI, PI);   // 時計の3時(0)からπ/2進んだ6時からπ進んだ12時までの半円
+// MODE
+// 指定なし : 中心と円弧の両端を結ぶ(strokeなし)
+// PIE : 中心と円弧の両端を結ぶ(strokeあり)
+// OPEN : 円弧の両端を結ぶ(strokeなし)
+// CHORD : 円弧の両端を結ぶ(strokeあり)</code></pre></details></li></ul></details></li></ul><ul id="90cade99-7944-43b8-a37f-ebd1dc7a4ca2" class="toggle"><li><details><summary>点[point(x, y)]</summary><pre id="b3703216-99e3-4ca5-ad88-4d26b4d3f69d" class="code code-wrap"><code>strokeWeight(10);   // 点の大きさはstrokeWeightで指定
+point(50, 50);</code></pre></details></li></ul><ul id="15db78ad-4541-4932-b77b-1eb4eda807d9" class="toggle"><li><details><summary>線[line(fromX, fromY, toX, toY)]</summary><pre id="19a68a36-7bda-4e76-b18a-de1ddf624c0f" class="code code-wrap"><code>strokeWeight(5);
+line(100, 100, 200, 200);</code></pre></details></li></ul><ul id="ae309276-6598-4f28-890a-45892fbd0a98" class="toggle"><li><details><summary>矩形[rect(x, y, w, h, cornerRadius)]</summary><ul id="8254b2b3-b0ed-4e56-8770-d392909fc71e" class="toggle"><li><details><summary>モード</summary><pre id="7798cf74-ca08-47b7-8329-8bbc93d98315" class="code code-wrap"><code>rectMode(CENTER);
+// CORNER : rect(x, y, w, h) // default
+// CENTER : rect(cX, cY, w, h)
+// CORNERS : rect(x1, y1, x2, y2) // 対角の座標
+// RADIUS : rect(cX, cY, halfW, halfH)</code></pre></details></li></ul><ul id="1d1b71c8-4a11-4cd6-bcf6-380d88a94f34" class="toggle"><li><details><summary>矩形</summary><pre id="fc55c45f-38cb-4d4e-8804-d55a4b6db105" class="code code-wrap"><code>rectMode(CENTER);
+rect(30, 20, 100, 50, 10);   // (30, 20)を中心にして、幅100、高さ50、角の丸みの半径10</code></pre></details></li></ul></details></li></ul><ul id="f0348038-0c02-4373-b836-58d58a732ea3" class="toggle"><li><details><summary>三角形[triangle(x1, y1, x2, y2, x3, y3)]</summary><pre id="9ee439f8-9572-4964-9e2a-a5bfed064525" class="code code-wrap"><code>triangle(100, 0, 80, 30, 120, 30);   // 3点を頂点とした三角形</code></pre></details></li></ul></details></li></ul><ul id="fce0242e-fbfc-4cc9-9424-cc39c6c48966" class="toggle"><li><details><summary>イメージ</summary><pre id="63da760b-6227-4532-89f8-8399796f2d4a" class="code code-wrap"><code>image(PATH or LOADED_IMAGE, destinationX, destinationY, destinationWidth, destinationHeight,
+[subsectionX, subsectionY,] [subsectionWidth, subsectionHeight]);
+// 直接パスを入力するかロードしたイメージの変数
+// destination: canvas上のイメージ描画の起点座標、描画させる幅と高さ
+// subsection: 元のイメージを切り取る場合の起点座標（左上）、切り取る幅と高さ。スプライトシート利用時などに使う</code></pre><ul id="a91d996e-20ac-4b9e-bd90-8646f2062d82" class="toggle"><li><details><summary>モード</summary><pre id="7bbf58b6-7d5e-49b7-9afc-3bf0cae09cbf" class="code code-wrap"><code>imageMode(MODE);
+// MODE
+// CORNER: (x, y, w, h) // デフォルト。w, hは省略可能
+// CORNERS: (x1, y1, x2, y2) // この中に収めるように配置
+// CENTER: (cX, cY, w, h) // イメージの中心を指定。w, hは省略可能
+
+imageMode(CENTER)
+image(&quot;./somthing.png&quot;, 50, 100);   // (50, 100)を中心にしてオリジナルサイズで描画</code></pre></details></li></ul><ul id="e1dd5ffc-c52b-45cb-9eda-e1feb26208e6" class="toggle"><li><details><summary>リサイズ</summary><pre id="f65f6a74-7e6a-4972-aeeb-080d3ef30ee7" class="code code-wrap"><code>IMAGE.resize(w, h);    // IMAGEはロードされた画像</code></pre></details></li></ul></details></li></ul><ul id="4fe82652-8852-450b-8be7-c768c4928960" class="toggle"><li><details><summary>テキスト</summary><pre id="c02c18d5-a76e-4317-9042-6c006b3e1a32" class="code code-wrap"><code>FONT = loadFont(&#x27;./abc.otf&#x27;)  // preloadで 
+
+textFont(FONT);
+
+textStyle(NORMAL);   // ITALIC, BOLD, BOLDITALIC
+textSize(FONTSIZE);   // pixels
+textAlign(CENTER, CENTER);    // horizontal: RIGHT, CENTER, LEFT, vertical: TOP, CENTER, BOTTOM, BASELINE
+
+textWrap(WORD);    // WORD:単語単位で、CHAR:文字単位で折り返す。この場合、以下のように範囲を指定する
+text(&#x27;text&#x27;, x, y, w, h);   // rectMode()の設定も必要。rect(x, y, w, h)に対して、textAlign()の設定となる。　分かりにくいので実際に試すのがよい</code></pre></details></li></ul><ul id="88d2f996-4f45-41f6-b7a3-71cf819d185d" class="toggle"><li><details><summary>便利な関数</summary><ul id="16c9eebc-7b12-47e6-8832-6515ced3fd1c" class="toggle"><li><details><summary>Math関連</summary><ul id="0efdab30-a918-4ac4-80b4-5cb113cd3081" class="toggle"><li><details><summary>ランダム　random</summary><pre id="b54d83d1-2fe6-47da-98f8-fa0c24401188" class="code code-wrap"><code>random();   // 0以上1未満
+random(3);   // 0以上3未満
+random(-5, 5);   // -5以上5未満
+random(ARRAY);   // ARRAYからランダムチョイス</code></pre></details></li></ul><ul id="baf72e05-78e3-46d9-b02f-4e5546ed2914" class="toggle"><li><details><summary>ある値を指定の範囲の値に変換　map</summary><pre id="c77c6409-e72f-49fe-8369-a28e0a119624" class="code code-wrap"><code>// 例）マウスのX座標、0～widthを0～2πに変換する
+let angle = map(mouseX, 0, width, 0, Math.PI * 2, true);
+// 最後のargumentをtrueにすることで,0-widthを越えた値は対象にしない。</code></pre></details></li></ul><ul id="89683662-899c-44ed-871e-c8683a74b1e8" class="toggle"><li><details><summary>内分点　lerp(start, stop, amt)</summary><pre id="5f51686b-6484-46f5-92f1-abdc57c8e681" class="code code-wrap"><code>lerp(start, stop, amt);   // amtは0～1の範囲。0ならばstart、1ならばstop。0.5ならばstartとstopの中間
+// (stop - start) * amt + start</code></pre></details></li></ul><ul id="ee2e8aa6-8a31-4e90-9eec-adef7a6174e8" class="toggle"><li><details><summary>正規化（0-1）に変換　norm</summary><pre id="a6452dfd-a2ec-41af-9f1e-6f143edfcf22" class="code code-wrap"><code>norm(value, start, stop);   // startは下限（最小）の数、stopは上限（最大）の数。その範囲でのある値value</code></pre></details></li></ul><ul id="c065182c-70b3-4cb3-8fed-bc398550ecf2" class="toggle"><li><details><summary>上限と下限を設定　constrain</summary><pre id="57dc65f3-9a6f-4f6d-8d5c-3d26f97d263a" class="code code-wrap"><code>constrain(n, low, high);
+// n（変数）の値をlow以上highいかに制限
+
+// 例）mouseXの値を100～300に制限
+let x = constrain(mouseX, 100, 300);   // mouseXが100より小さくなっても、xの値は下限の100を維持</code></pre></details></li></ul><ul id="b4d3769e-0a3d-4e48-b517-856662fbc1dc" class="toggle"><li><details><summary>距離　dist   /   mag</summary><pre id="56ee8e69-4faa-4ee7-bb6d-9df0aa3e3c14" class="code code-wrap"><code>let d = dist(x1, y1, x2, y2);   //2点間の距離
+
+let m = mag(x1, y1);   // 原点(0, 0)からの距離。ベクターで使用</code></pre></details></li></ul><ul id="59dc2a92-e159-4462-baf6-ffca86e4f451" class="toggle"><li><details><summary>ArcTangent()</summary><pre id="8c389265-1149-4977-bfa5-4ed774e71ca8" class="code code-wrap"><code>// (x0, y0)から(mouseX, mouseY)に向かう角度
+let angle = atan2(mouseY - y0, mouseX - x0);</code></pre></details></li></ul></details></li></ul><ul id="0df5bbc2-8a45-479a-ba98-5edd37293d9f" class="toggle"><li><details><summary>Array関連</summary><pre id="4fd51e38-91cb-4602-b29f-fd8fcdf08649" class="code code-wrap"><code>基本的にはJavaScriptのビルトインのアレイメソッドを使う
+join(), indexOf(), concat(), shift(), unshift(), push(), pop(), reverse(), slice(), splicenなど</code></pre><ul id="c5ac1286-b45c-4e8b-b910-7842cb867fae" class="toggle"><li><details><summary>シャッフル shuffle</summary><pre id="ef52d3c2-f665-44b1-8916-a6880489b681" class="code code-wrap"><code>let arr = [1, 2, 3];
+let newArr = shuffle(arr);   // シャッフルされ、arrは変更なし。
+let newArr2 = shuffle(arr, true);  // シャッフルされ、arr自身も変更される(newArr2 === arr)
+</code></pre></details></li></ul></details></li></ul></details></li></ul><ul id="c9da7b1f-b27a-4628-99b2-d83473eb6282" class="toggle"><li><details><summary>トランスフォーム</summary><ul id="e9880284-a842-4076-8709-1d644ee6bb6c" class="toggle"><li><details><summary>拡大・縮小　scale(wx, hx)</summary><pre id="d660b869-26b1-40fa-ab41-92d806e21ec1" class="code code-wrap"><code>scale(2)  // 2倍
+scale(2, 0.5)   // x方向へ2倍、y方向へ0.5倍</code></pre></details></li></ul><ul id="486de441-d75a-4957-bc77-78b2b73fbbda" class="toggle"><li><details><summary>座標原点の移動　translate(x, y)</summary><pre id="f24d1265-bc7c-4fa7-ac2e-d38ea1842f73" class="code code-wrap"><code>translate(x, y)</code></pre></details></li></ul><ul id="79a458e3-243b-4128-80e5-3d2f7a291fab" class="toggle"><li><details><summary>座標原点を中心に回転　rotate(angle)</summary><pre id="665e69fb-36bd-4bf3-acdf-2127d0bd6063" class="code code-wrap"><code>rotate(120);   // デフォルトではdegree。120度
+
+angle = radians(120);   // radianにできる
+rotate(angle);</code></pre></details></li></ul></details></li></ul><ul id="ca388581-8446-476c-b512-8c0fe3a2195d" class="toggle"><li><details><summary>p5 Graphics(別のスクリーン)を作る</summary><pre id="19b88c11-93f2-40af-a4fa-f338093f94b9" class="code code-wrap"><code>let pg;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+
+  pg = createGraphics(windowWidth/2, windowHeight/2); // pgという新しいスクリーン（キャンバス）を作成。w, hを設定。　
+	pg.noFill();    // pgの初期設定
+  pg.stroke(0);
+	pg.imageMode(CENTER);
+  pg.background(255, 255, 255);    // color
+}
+
+
+function draw() {
+  image(pg, width/2, height/2);    // pgを描画。pgはひとつのイメージと考えればよい
+}</code></pre></details></li></ul><ul id="30072ed9-58a9-4fcf-b12e-af115d342801" class="toggle"><li><details><summary>イベント</summary><pre id="931067a6-a9ac-492b-a82b-a1798a5ff438" class="code code-wrap"><code>// 全体に設定
+function XXX(){}　　// window.addEventListener(&#x27;click&#x27;, () =&gt; {})
+ 
+// element（HTMLのエレメント）ごとに設定
+Element.XXX(FUNC)　　// ELEMENT.addEventListener(&#x27;click&#x27;, FUNC);</code></pre><ul id="6479e12c-ba87-4b2a-a98c-053180d719d8" class="toggle"><li><details><summary>マウスイベント</summary><ul id="a3ac5317-9c9c-46b8-8c2a-0924dab1ad2f" class="toggle"><li><details><summary>マウスダウン　mouseIsPressed (boolean判定)</summary><pre id="92cf397d-bca9-44a0-8aba-7aec06c8603f" class="code code-wrap"><code>if(mouseIsPressed){};</code></pre></details></li></ul><ul id="5da78832-5e1a-4327-aa12-d4b76f6bf959" class="toggle"><li><details><summary>マウスダウン・アップ　mousePressed()   /   mouseReleased()</summary><pre id="b098e058-7854-4917-8244-3056da6097aa" class="code code-wrap"><code>function mousePressed(){};
+function mouseReleased(){};
+
+ELEMENT.mousePressed(FUNC);
+ELEMENT.mouseReleased(FUNC);</code></pre></details></li></ul><ul id="661473e2-034c-4980-8479-becaa1abb7b3" class="toggle"><li><details><summary>マウスムーブ　mouseMoved()</summary><pre id="3a3d9d11-228a-4dd6-a356-5590773bf8e8" class="code code-wrap"><code>function mouseMoved(){};
+
+ELEMENT.mouseMoved(FUNC);</code></pre></details></li></ul><ul id="f4c7159f-cb85-4f34-8035-2c4839239dca" class="toggle"><li><details><summary>マウスクリック　mouseClicked()</summary><pre id="9412dda7-175c-4802-8076-96713382d20e" class="code code-wrap"><code>function mouseClicked(){};
+
+ELEMENT.mouseClicked(FUNC);</code></pre></details></li></ul><ul id="90bf0f26-caa6-42f7-b427-d014e60540e2" class="toggle"><li><details><summary>ダブルクリック　doubleClicked()</summary><pre id="a44edfaf-67a1-476e-ba08-30827eba0bb2" class="code code-wrap"><code>function doubleClicked(){};
+
+ELEMENT.doubleClicked(FUNC);</code></pre></details></li></ul><ul id="0e4d90ce-e123-435d-9e34-a9b6adc871c6" class="toggle"><li><details><summary>マウスオーバー、マウスリーブ　mouseOver()   /   mouseOut()</summary><pre id="810a6cbc-7009-426e-afa9-857212aa0edb" class="code code-wrap"><code>function mouseOver(){};
+function mouseOut(){};
+
+ELEMENT.mouseOver(FUNC);
+ELEMENT.mouseOut(FUNC);</code></pre></details></li></ul><ul id="507053b1-3826-40a3-abc9-1afaee2aff87" class="toggle"><li><details><summary>マウスドラッグ　  mouseDragged()   // mousePressed &amp; mouseMoved</summary><pre id="d73e66b9-c8fc-4eb6-be85-bbd3af6d9d8c" class="code code-wrap"><code>function mouseDragged() {
+  ellipse(mouseX, mouseY, 5, 5);
+  // prevent default
+  return false;
+}</code></pre></details></li></ul></details></li></ul><ul id="8a952c74-76f5-4b3c-8431-9366c3039c69" class="toggle"><li><details><summary>キーイベント</summary><ul id="50598fcf-a407-4640-99cb-6693aac2b447" class="toggle"><li><details><summary>キー　key </summary><pre id="6b4c4807-9b4b-4cef-9e9a-a67906b91435" class="code code-wrap"><code>function keyCheck(){
+	if(keyIsPressed){
+		push();
+		textSize(100);
+		fill(&quot;#af0&quot;);
+		text(key, width/2, 100)
+		pop();
+	}
+}</code></pre></details></li></ul><ul id="58cd5e88-1898-4dfa-b296-60d45e340511" class="toggle"><li><details><summary>keyCode(数字）、<a href="https://www.toptal.com/developers/keycode">https://www.toptal.com/developers/keycode</a></summary><pre id="332dc7c7-6724-48c0-a880-15f6d1f8710d" class="code code-wrap"><code>// The variable keyCode stores the 
+// BACKSPACE, DELETE, ENTER, RETURN, TAB, ESCAPE, SHIFT, CONTROL, OPTION, ALT, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW.
+if (keyCode === UP_ARROW) {
+    ///
+  }</code></pre><pre id="938f16fb-c026-47ba-b8de-f15eb2d5830c" class="code code-wrap"><code>window.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+	const keyCode = e.keyCode
+})</code></pre><p id="ee423156-0fe7-44c6-93c6-6fc3cffe3794" class="">
+</p></details></li></ul><ul id="0d72ddcb-4ab1-417e-b337-eaf56fd4efd4" class="toggle"><li><details><summary>キープレス　keyIsPressed　(boolean判定)</summary><pre id="19db6abc-2773-4aed-a2df-0af0f8967a29" class="code code-wrap"><code>//   if (keyIsPressed &amp;&amp; (key == &#x27;a&#x27;)) {}など</code></pre></details></li></ul><ul id="794d7059-772a-4639-bfd9-41b48e498dad" class="toggle"><li><details><summary>キーダウン　KeyIsDown(KEY_CODE)　 (boolean判定)</summary><pre id="a8a5629b-49b2-42da-be10-e02c0df7335b" class="code code-wrap"><code>// keyCodeの確認
+function keyPressed(){
+	console.log(keyCode);
+}</code></pre></details></li></ul><ul id="98ac64b5-785a-4aac-aece-31c9e5681c39" class="toggle"><li><details><summary>キーダウン・アップ　keyPressed()   /   keyReleased()</summary><pre id="f0f3458b-040f-4d30-b031-f508b87af9b6" class="code code-wrap"><code>function keyPressed() {
+  if ((key == &#x27;T&#x27;) || (key == &#x27;t&#x27;)) {
+    drawT = true;
+  }
+}
+
+function keyReleased() {
+  drawT = false;
+}</code></pre><pre id="a00f8dd1-8c8f-499f-b0c1-6916feb6aced" class="code code-wrap"><code>window.addEventListener(&#x27;keydown&#x27;, () =&gt; {})
+window.addEventListener(&#x27;keyup&#x27;, () =&gt; {})</code></pre></details></li></ul><ul id="de780841-aa86-4794-ad13-35238c149830" class="toggle"><li><details><summary>キータイプ関数　keyTyped(){}</summary><pre id="980e3f4d-0bc7-4dea-8aa0-bab63e6c877c" class="code code-wrap"><code>function keyTyped() {
+  if (key === &#x27;a&#x27;) {
+    value = 255;
+  } else if (key === &#x27;b&#x27;) {
+    value = 0;
+  }
+}</code></pre></details></li></ul><ul id="c6deb890-9bdf-48c1-a70e-6d745ce1a7cf" class="toggle"><li><details><summary>複数キーを認識させるために</summary><pre id="13a31c47-85ee-43f1-8ebf-44fcb937b031" class="code code-wrap"><code>this.controllKeys = [83, 37, 38, 39, 40];   // &#x27;s&#x27;, &#x27;ArrowLeft&#x27;,&#x27;ArrowUp&#x27;, &#x27;ArrowRight&#x27;, &#x27;ArrowDown&#x27;
+this.keys = [];
+///
+keyControl(){
+		        this.controlKeys.forEach(key =&gt; {
+            if(keyIsDown(key) &amp;&amp; !this.keys.includes(key)) this.keys.push(key);
+            if(!keyIsDown(key) &amp;&amp; this.keys.includes(key)) this.keys.splice(this.keys.indexOf(key), 1);
+        })
+    }
+///
+if(this.keys.includes(this.controlKeys[0]) &amp;&amp; frameCount % 10 === 0 &amp;&amp; this.bullets.length &lt; 5){
+            this.bullets.push(new Bullet(bulletImage, this.x + this.w/2, this.y));
+            clickSound.play();
+        }</code></pre><pre id="a781fb25-be25-4f20-b9d3-423471961d78" class="code code-wrap"><code>// 組み合わせで正しい挙動を示さない場合もある
+スペース+アローアップ+アローレフトの組み合わせはなぜか動作しない =&gt; スペースではなく &#x27;s&#x27; を採用</code></pre></details></li></ul></details></li></ul></details></li></ul><ul id="0337e5a8-16b0-4503-8400-b9abbf0a0e67" class="toggle"><li><details><summary>オーディオ</summary><ul id="13e917ff-ee53-4fa9-b94e-d945954c7f7e" class="toggle"><li><details><summary>再生、停止などの操作</summary><pre id="3ff3ea48-b0d4-417c-a6ad-41a1440572f1" class="code code-wrap"><code>// p5.sound.jsをインポート
+
+sound.play();
+sound.pause();
+sound.loop();   // ループ再生設定
+sound.isPlaying();  // true or false
+sound.stop();
+sound.rate(rate);  // 再生速度。0.5で半分のスピードで再生、2で2倍速で再生
+sound.setVolume(v);
+sound.currentTime();   // 現在までの経過時間
+sound.duration();  // 全体の再生時間を取得
+sound.jump(cueTime, duration);  // cueTime: スタート位置（秒）、duration: 再生時間</code></pre></details></li></ul><ul id="54877285-b44c-436b-8c33-8c7113c0666b" class="toggle"><li><details><summary>p5.Amplitude()　音の大きさを数値で得る</summary><pre id="a8cb1cb5-ea11-4de3-9cb0-1d134915d52e" class="code code-wrap"><code>let sound, amp;
+// preload
+sound = loadSound(&#x27;sound.mp3&quot;);
+
+// setup
+amp = new p5.Amplitude();
+amp.setInput(sound);
+
+// draw
+let level = amp.getLevel();
+// levelの値を使って画像を変形させるなどできる</code></pre></details></li></ul><ul id="553c49db-fc8d-40e8-9415-253189c33377" class="toggle"><li><details><summary>マイク</summary><ul id="51a1bd8b-20ae-46c3-9c2a-013b1d5e3572" class="toggle"><li><details><summary>音量</summary><pre id="49a40dbf-02bd-4bc4-8d51-5850c9c6fb4d" class="code code-wrap"><code>let mic;
+
+// setup
+mic = new p5.AudioIn();
+mic.start();
+
+//draw
+level = mic.getLevel();
+// levelの値を使って画像を変形させるなどできる
+
+mic.stop();
+mic.enabled;  // T/F オンになっているか</code></pre></details></li></ul><ul id="850d26d1-7a3d-44d6-b7bd-8968dacf18de" class="toggle"><li><details><summary>録音、保存</summary><pre id="d276f754-4321-4d52-93f4-dfb9df23d273" class="code code-wrap"><code>let mic, rec, sfile;
+
+// setup
+mic = new p5.AudioIn();
+rec = new p5.SoundRecorder();
+sfile = new p5.SoundFile();
+
+rec.setInput(mic);
+mic.start();
+
+//////////////////////////////////////</code></pre></details></li></ul></details></li></ul></details></li></ul><ul id="a458c775-95a6-4328-8c02-296f8e81e357" class="toggle"><li><details><summary>Local storage(ブラウザ上に保存されるデータ)</summary><ul id="e8fbc5b3-805d-4372-8490-df52ed8156fd" class="toggle"><li><details><summary>データの取得</summary><pre id="272007a1-9902-4d43-9d9e-d51ea2b2bd4c" class="code code-wrap"><code>let data = getItem(&quot;MYDATA&quot;);   // &quot;MYDATA&quot;はローカルストレージ上のKey（この名前でデータが保存される）
+if (!data) {   // &quot;MYDATA&quot;がnull（未だ存在しない）場合
+ data = &#x27;&#x27;;    // 文字列ではなく、array, objectでも可
+}</code></pre></details></li></ul><ul id="268d08fb-f2e5-4bb6-a59d-a969848e7b74" class="toggle"><li><details><summary>データの保存</summary><pre id="8cea55a6-91cd-4684-952f-72ce44d7599d" class="code code-wrap"><code>// let data = getItem(&quot;MYDATA&quot;); 
+
+// 文字列の場合
+storeItem(&#x27;MYDATA&#x27;, &#x27;This is your text&#x27;);
+
+// arrayの場合
+// data.push(&quot;something&quot;)やdata[0] = 99などの処理をした後に保存
+storeItem(&#x27;MYDATA&#x27;, data)
+
+// objectの場合
+// data[&quot;red&quot;] = 100などの処理をした後に保存
+storeItem(&#x27;MYDATA&#x27;, data)</code></pre></details></li></ul><ul id="707a558f-d0ba-4cda-a837-bfc010508417" class="toggle"><li><details><summary>データのクリア、削除</summary><pre id="e81adb8a-2a98-4531-bbef-af4aef555516" class="code code-wrap"><code>// 文字列の場合
+storeItem(&#x27;MYDATA&#x27;, &#x27;This is your text&#x27;);
+// &quot;MYDATA&quot;は残したままクリア
+clearStorage();
+
+// &quot;MYDATA&quot;全体を削除
+removeItem(&#x27;MYDATA&#x27;);
+
+</code></pre><p id="0e833e02-cab5-408b-b753-82b7e398057b" class="">
+</p></details></li></ul></details></li></ul><ul id="e5bb7048-ae97-49f1-bfb0-65766477403d" class="toggle"><li><details><summary>HTMLエレメントの作成、操作など</summary><ul id="bd0171e9-1a59-4d02-ab37-ec8ef8fb6c69" class="toggle"><li><details><summary>createELEMENT()</summary><pre id="b01a7f2c-5e3b-4bcc-add4-6dba12ba406f" class="code code-wrap"><code>// タグを指定を作成
+
+let h5 = createElement(&#x27;h5&#x27;, &#x27;hello&#x27;);   // &lt;h5&gt;hello&lt;/h5&gt;
+h5.style(&quot;color&quot;, &quot;#f0a&quot;);   // style
+// h5.setAttribute(ATTR, VALUE)
+h5.position(20, 20);   // position: absolute;</code></pre></details></li></ul><ul id="1cc17429-edbf-407d-a8d6-cd847f1c388e" class="toggle"><li><details><summary>createDivなど</summary><pre id="35c7da0c-014f-46ca-b989-f2062192a1d5" class="code code-wrap"><code>// Div, A, Spanなど様々
+
+let div = createDiv(&quot;I am div element&quot;);   // &lt;div&gt;I am div element&lt;/div&gt;
+div.position(10, 10);   // position: absolute;
+div.style(&quot;font-size&quot;, &quot;30px&quot;).(&quot;color&quot;, &quot;red&quot;);   // styleの設定
+// div.setAttribute(ATTR, VALUE)</code></pre><pre id="9251697e-40af-4f4c-b5f1-3dee85e72beb" class="code code-wrap"><code>let img = createImage(SRC, ALT);
+img.position(0, 0);</code></pre></details></li></ul><ul id="889fa5fb-7995-437d-9c25-65bb1bf6a3f5" class="toggle"><li><details><summary>タグ内の文字列の変更、文字列の取得</summary><pre id="bdfbbdc6-053f-460e-9b5b-e83affeddc51" class="code code-wrap"><code>let div = createDiv(&quot;How are you?&quot;);   // &lt;div&gt;How are you?&lt;/div&gt;
+// 文字列の変更
+div.html(&#x27;good&#x27;);
+
+// 文字列の取得
+div.html();</code></pre></details></li></ul><ul id="e2ae6a65-ce1a-41b6-bcf3-b8d20ee3c54b" class="toggle"><li><details><summary>その他のDOM操作　hide(), show(),  class(), addClass(),  toggleClass(), id()など様々あり</summary><pre id="1533c6e1-1002-4cd9-a7f3-592259a4c290" class="code code-wrap"><code>let div = createDiv(&quot;How are you?&quot;);   // &lt;div&gt;How are you?&lt;/div&gt;
+
+div.hide();
+div.show();
+div.remove();
+div.class(&#x27;first&#x27;);  // クラスを変更
+div.addClass(&#x27;second&#x27;);   // クラスを追加。もしくはdiv.classList.add()
+div.toggleClass(&#x27;tog&#x27;);  // mouseClickなどと組み合わせて使う
+div.id(&#x27;right&#x27;);
+// その他様々
+// https://p5js.org/reference/#/p5.Element
+</code></pre></details></li></ul><ul id="80bf3063-7d2f-4590-9741-cb2e0bce4ff0" class="toggle"><li><details><summary>Elementの取得</summary><pre id="08e124c2-52b8-4e1a-a89d-b95fca75f1ab" class="code code-wrap"><code>let bodyElement = select(&quot;body&quot;);
+// select(&quot;CSS SELECTOR&quot;)   &quot;#container&quot;や&quot;.upper p&quot;など
+// getElementByIdやquerySelectorは機能しないことに注意
+
+let divs = selectAll(&quot;div&quot;);   // すべてをアレイで取得</code></pre></details></li></ul><ul id="3b718b33-30d1-47cd-b57d-6bb1fd777513" class="toggle"><li><details><summary>ボタン　createButton()</summary><pre id="faae9096-a3a0-4a94-8ba3-573665b4c333" class="code code-wrap"><code>let button = createButton(&#x27;click me&#x27;);
+button.html(LABEL);  // 文字列を変更する場合に使う
+button.size(w, h);   // サイズを指定
+button.position(0, 0);   // 表示場所を指定
+button.style(PROPERTY, VALUE);  // &quot;color&quot;, &quot;red&quot;
+button.hide();
+button.show();
+
+button.mousePressed(FUNC);  // 関数は引数無しで,()無しの名前にする
+
+button.width;
+button.height;</code></pre></details></li></ul><ul id="289cb60a-bd80-4c94-a172-34be9fff37ec" class="toggle"><li><details><summary>セレクトプルダウンリスト　createSelect()</summary><pre id="2c1bbe00-0e06-4608-b85a-1b0057936091" class="code code-wrap"><code>select = createSelect();  // argumentにtrueとすることでマルチセレクトが可能になる
+select.position(10, 10);
+select.option(&#x27;apple&#x27;);  // argument二つ目でvalueを設定できる
+select.option(&#x27;grape&#x27;);
+select.selected(&#x27;apple&#x27;);   // 初期の選択、変更
+select.disable(&#x27;dog&#x27;);   // 選択不可
+select.changed(FUNC);   // changed()はchangeイベントハンドラー
+select.value();  // 選択されたオプションのValue。let item = select.value();</code></pre></details></li></ul><ul id="217c4b06-d129-4bd2-bb31-92260afe00ab" class="toggle"><li><details><summary>ラジオボタン　createRadio()</summary><pre id="1e5aff00-eb05-47ae-9e17-5cf646dd51ab" class="code code-wrap"><code>radio = createRadio();
+radio.position(10, 10);
+radio.option(&#x27;100&#x27;, &#x27;apple&#x27;);   // value, key
+radio.option(&#x27;200&#x27;, &#x27;grape&#x27;);
+radio.selected(&#x27;100&#x27;);   // 初期の選択
+radio.disable(&#x27;dog&#x27;);   // 選択不可
+radio.value();   // let val = radio.value();</code></pre></details></li></ul><ul id="8a8da099-2fe8-4dcc-8e4a-2c3fbfed43b1" class="toggle"><li><details><summary>スライダー　createSlider()</summary><pre id="909ca563-212a-4a71-ab87-d29d15abc71d" class="code code-wrap"><code>slider = createSlider(min, max, [currentValue], [step]);
+slider.position(10, 10);
+slider.style(&#x27;width&#x27;, &#x27;80px&#x27;);
+
+let val = slider.value();</code></pre></details></li></ul><ul id="9c3292dd-e9f0-47ba-9051-447047b3871e" class="toggle"><li><details><summary>チェックボックス　createCheckbox()</summary><pre id="fee6c30d-edd8-461c-b0d1-bc9d54067a39" class="code code-wrap"><code>let checkbox1 = createCheckbox(&#x27;label&#x27;, false);   // false =&gt; no check
+checkbox1.changed(FUNC);
+checkbox1.selected(value);  // valueで指定された項目を返す？？？
+checkbox1.checked()   // true/false
+checkbox1.value()  // チェックされた値
+checkbox1.disable();
+</code></pre></details></li></ul><ul id="da48fc2d-df63-4116-b922-4da1a41f12e2" class="toggle"><li><details><summary>インプット　createInput()</summary><pre id="9353e566-dece-4abf-83ad-b40943660636" class="code code-wrap"><code>// input = createInput(value, [type]);   // text, passwordなど
+inputBox = createInput(DEFAULT_VALUE);  // default値を設定できる
+inputBox.position(20, 65);
+inputBox.input(FUNC);   // inputはinputイベントハンドラー
+
+inputBox.changed(FUNC);
+
+let val = inputBox.value();
+
+// submitはcreateButtonをして処理を作成する</code></pre></details></li></ul><ul id="40814c02-081e-4784-90a5-1cc8a2bf01cf" class="toggle"><li><details><summary>ファイルインプット　createFileInput()</summary><pre id="6bf0ec55-e938-4f25-ac94-82bacd8f7e21" class="code code-wrap"><code>// input = createInput(callback, [multiple]);
+input = createFileInput(FUNC);
+input.position(20, 65);
+///
+function FUNC(file){
+	if(file.type === &#x27;image&#x27;){  // &quot;text&quot;, &quot;video&quot;など
+		img = createImg(file.data, &#x27;&#x27;);  // 文字列、base64エンコードデータ
+		img.hide();   // hide(), display:none;
+	} else {
+		img = null;
+	}
+}</code></pre></details></li></ul><ul id="f2c153d1-17a3-4cf9-a430-153063ab8cbc" class="toggle"><li><details><summary>イメージ　createImg()</summary><pre id="d38af469-192f-4b6c-8b42-129edb884104" class="code code-wrap"><code>// &lt;img&gt;タグを生成
+let img = createImg(&quot;pict.png&quot;, &quot;picture&quot;);  // ふたつめのargumentはalt
+img.position(100, 100);</code></pre></details></li></ul></details></li></ul><ul id="16fb35d0-7412-4325-88e4-3af0ef1045d6" class="toggle"><li><details><summary>ノイズ　noise(x, [y], [z])    /   noiseSeed()</summary><pre id="ade77e9d-85a9-46f9-9133-dfa9ec9f5fe0" class="code code-wrap"><code>// Perlin noise
+// 0 =&lt; noise(x) =&lt; 1の値
+// xの変化量により変動幅を調整。小さい変化ほど変動は小さい（連続的）
+let n = noise(x, [y], [z]);
+
+noiseSeed(9);   // いつも同じ動きをさせるときにはsetup()に設定しておく</code></pre></details></li></ul><ul id="fd35d392-37da-415e-b403-23345e30a900" class="toggle"><li><details><summary>キャンバスの画像を保存</summary><pre id="970105dc-fbd9-4f4e-a24e-0e81114b3751" class="code code-wrap"><code>saveCanvas(canvas, &#x27;my_picture&#x27;, &#x27;png&#x27;)   // &#x27;jpg&#x27; or &#x27;png&#x27;  </code></pre></details></li></ul><ul id="3d5150c6-8e00-493e-96f6-ad85089ee7d0" class="toggle"><li><details><summary>ベクトル　p5.Vector</summary><ul id="4f07248c-b33a-49ec-a4b5-23cb865f94d2" class="toggle"><li><details><summary>p5.Vectorオブジェクトの作成</summary><ul id="a10f1745-c1d8-4104-a74c-7330781b1995" class="toggle"><li><details><summary>createVector(x, y)   /   createVector(x, y, z)</summary><pre id="018aa2e0-f367-4a8b-b8fd-c494efeb9e5a" class="code code-wrap"><code>let v = createVector(10, 20);
+let vx = v.x;   // 10
+let vy = v.y;   // 20</code></pre></details></li></ul><ul id="3c6ba526-4153-482e-969b-afd1738ba69f" class="toggle"><li><details><summary>p5.Vector.fromAngle(angle, length)</summary><pre id="2c50c650-0ad0-4729-b648-fbdd83f8130e" class="code code-wrap"><code>let v = p5.Vector.fromAngle(Math.PI / 6, 30);
+let vx = v.x;
+let vy = v.y;</code></pre></details></li></ul><ul id="4614afbe-6a95-4d37-a22f-ddf448bba59d" class="toggle"><li><details><summary>p5.Vector.random2D()   /   random3D</summary><pre id="86782354-4e4a-420e-b191-2bd4abd93f29" class="code code-wrap"><code>let v = p5.Vector.random2D();     // length == 1</code></pre></details></li></ul></details></li></ul><ul id="ecc02260-a143-47e4-827b-e01f35098eb1" class="toggle"><li><details><summary>p5.Vector Methods</summary><pre id="fc4cdfae-0ca4-4dc0-9ea0-c1f4d6da2fbb" class="code code-wrap"><code>const v1 = createVector(100, 200);
+const v2 = createVector(80, 40);</code></pre><ul id="989e3517-b939-4e4a-8dee-edde844b14c7" class="toggle"><li><details><summary>合成・拡大　add()   /   sub()   /   mult()  /  setMag()  /   div()</summary><pre id="2a72aaa3-7fb8-430a-9e7c-fe10a0d93bc9" class="code code-wrap"><code>v1.add(1, 2);   // もしくはv.add([1, 2]);　101, 202に。v1自体が更新されることに注意
+v1.add(v2);   // 180, 240に。v1自体が更新されることに注意
+
+let v3 = p5.Vector.add(v1, v2);   </code></pre><pre id="b5ea3715-e222-43cc-94fd-80d400fc38de" class="code code-wrap"><code>v1.sub(1, 2);   // もしくはv.sub([1, 2]);　99, 198に。v1自体が更新されることに注意
+v1.sub(v2);   // 20, 160に。v1自体が更新されることに注意
+
+let v3 = p5.Vector.sub(v1, v2); </code></pre><pre id="48eadf0f-74cf-49c6-b803-8fad848e1345" class="code code-wrap"><code>v1.mult(2);   // 200, 400に。v1自体が更新されることに注意
+v1.mult([1, 2]);    // 100, 400yに。それぞれ別の値で。v1自体が更新されることに注意
+v1.mult(v2);   // 8000, 8000に。v1自体が更新されることに注意
+
+let v3 = p5.Vector.mult(v1, 3);
+let v3 = p5.Vector.mult(v1, v2);</code></pre><pre id="c0bee6f8-73e0-4e60-8353-fd9c8f9bdf24" class="code code-wrap"><code>v1.setMag(10);   // lengthが10に。v1自体が更新されることに注意
+
+let v3 = p5.Vector.setMag(v1, 10);</code></pre><pre id="8c7d9100-8b06-4e1a-b964-ac7bef03c2b9" class="code code-wrap"><code>v1.div(10);   // 10, 20。v1自体が更新されることに注意
+v1.div(v2);   // 1.25, 5に。v1自体が更新されることに注意
+
+let v3 = p5.Vector.div(v1, v2);   </code></pre></details></li></ul><ul id="bc2d2792-c4ce-4ada-b184-ea70e3b2b58c" class="toggle"><li><details><summary>アレイに　v.array()</summary><pre id="9747a6bb-9359-49b3-8fbc-1d396612de15" class="code code-wrap"><code>v1.array();   // [100, 200]</code></pre></details></li></ul><ul id="da292509-33a6-4b66-9652-5d0dd73a5c27" class="toggle"><li><details><summary>更新　v.set(x, y)   /   v.set(x, y, z)</summary><pre id="45119a0b-039c-4350-90f3-5aedb305d0e1" class="code code-wrap"><code>v1.set(50, 100);
+console.log(v1);   // x, yが更新されたベクターに更新</code></pre></details></li></ul><ul id="bbad8678-16a6-47a4-b718-f71b09d610c3" class="toggle"><li><details><summary>コピー　v.copy()</summary><pre id="c296d7a8-025c-461d-875d-552fb5530f08" class="code code-wrap"><code>const v3 = v1.copy();</code></pre></details></li></ul><ul id="e156a374-4bb3-46e3-93cb-5b6dca12c7aa" class="toggle"><li><details><summary>大きさの取得　mag()   /   magSq()</summary><pre id="7b7a17bf-4df1-4319-84b9-898668f72c38" class="code code-wrap"><code>v1.mag();
+p5.Vector.mag(v1)
+
+// 三平方の定理の二乗のままのmagSq()は単純に大きさを比較する場合に用いる（早い）</code></pre></details></li></ul><ul id="c250f668-a374-48a3-a5f0-151a8f02b191" class="toggle"><li><details><summary>ノーマライズ（大きさを１に）　normalize()</summary><pre id="36122be4-65c5-44c0-b01d-4ee5e82d9c9f" class="code code-wrap"><code>let v3 = v1.normalize();   // v1自体が更新されることに注意
+let v3 = p5.Vector.normalize(v1);</code></pre></details></li></ul><ul id="bac88dd7-56e6-431f-be7a-9dc23495589b" class="toggle"><li><details><summary>2ベクトルの距離　dist()    // 正の値</summary><pre id="329a8259-da83-4d5e-aa21-13a7003a95a5" class="code code-wrap"><code>let d = v2.dist(v1);
+let d = p5.Vector.dist(v1, v2)</code></pre></details></li></ul><ul id="aa7cb857-136f-45fe-810f-f629d94a04ef" class="toggle"><li><details><summary>大きさの制限　limit()</summary><pre id="086ce8cb-8efc-4a65-8b3d-ac9205f1fc1d" class="code code-wrap"><code>let v = v.limit(5)    // v.limit(5)だけでも更新される</code></pre></details></li></ul><ul id="1d120e85-07f9-47a2-a792-8b5d2b0422ac" class="toggle"><li><details><summary>向きを取得・変更　heading()   /   v.setHeading(angle) or v.rotate(angle)</summary><pre id="0a065d2d-8637-4aa5-9f1a-4ac56c0b6d41" class="code code-wrap"><code>let angleNow = v1.heading();   // radian
+
+let v3 = v1.setHeading(PI);   // PIラジアンに
+
+let v3 = v1.rotate(PI);   // PIラジアン回転</code></pre></details></li></ul><ul id="476da6cd-a15a-435d-ab4c-bfbd0a59d0f7" class="toggle"><li><details><summary>2ベクトルの成す角　angleBetween()</summary><pre id="b9fcb3db-524d-4e6b-9318-af6fbdd1f805" class="code code-wrap"><code>let angle = v1.angleBetween(v2);    // v1からv2への角</code></pre></details></li></ul><ul id="ee8cfd02-ced9-42cb-85c8-8828941ff120" class="toggle"><li><details><summary>2ベクトルの内分点　lerp()</summary><pre id="ed3d1994-c4c1-4fa2-b8b7-34fa85ab5d21" class="code code-wrap"><code>v1.lerp(v2, 0.5);    // v1は内分するベクトルに置き換わる
+p5.Vector.lerp(v1, v2, 0.5);</code></pre></details></li></ul><ul id="5be528f7-3ba0-43f3-bd7b-8604dc1c84fc" class="toggle"><li><details><summary>判定　equals()</summary><pre id="a687e988-759c-4d02-bb4b-357023d5b5b0" class="code code-wrap"><code>v1.equals(v2);</code></pre></details></li></ul></details></li></ul></details></li></ul></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
