@@ -92,6 +92,22 @@ function mouseClicked() {
         w *= 0.9;
         h *= 0.9;
         offsetValue *= 0.9;
+        // なぜw * offsetValueではないのか？ => 画像サイズが変わるたびに、中心からのオフセット値も変わるため、現在の画像サイズに対してオフセット値を計算する必要がある。
+        // bluebatImage.width = 200  offsetValue = 0.045 = 9pxずらす
+        // w = 180 offsteValue = 0.045 = 8.1pxずらす
+        // 状態	            w	    offset_value	bluebat_image.width * offset_value	w * offset_value
+        // 最初	            200	    0.05	        10	                                0
+        // 1回クリック	    180	    0.045	        9	                                8.1
+        // 2回クリック	    162	    0.0405	        8.1	                                6.561
+        // 3回クリック	    145.8	0.03645	        7.29	                            5.314   
+
+
+
+
+
+
+
+
         centerOffset = bluebatImage.width * offsetValue;
         bluebatIsDead = w <= bluebatImage.width * (0.9 ** 5);
         updateState();

@@ -3,7 +3,6 @@ let canvas;
 let bluebatImage;
 let backgroundImage;
 let clickSound, bgm, deadSound;
-let score;
 let playing;
 let state;
 let messagePG;

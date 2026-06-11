@@ -19,8 +19,6 @@ class Bluebat {
     }
 
     draw() {
-        // 画像の向きによって描画方法を変える
-        // 左向きに進むときは通常の描画、右向きに進むときは左右反転して描画
         if(this.speedX < 0) {
             image(this.img, this.x, this.y, this.w, this.h, this.spriteX * this.originalW, this.spriteY * this.originalH, this.originalW, this.originalH);
             // image(PATH or LOADED_IMAGE, destinationX, destinationY, destinationWidth, destinationHeight,[subsectionX(区切り位置), subsectionY(区切り位置),] [subsectionWidth, subsectionHeight]);
@@ -37,7 +35,6 @@ class Bluebat {
             // image(PATH or LOADED_IMAGE, destinationX, destinationY, destinationWidth, destinationHeight,[subsectionX(区切り位置), subsectionY(区切り位置),] [subsectionWidth, subsectionHeight]);
             noFill();
             stroke("#f00");
-            // ?? 反転しているので、中心点も反転させる必要がある
             circle(0 - this.centerOffset, 0 + this.centerOffset, this.w * 0.7);
             pop();
         }
@@ -49,7 +46,6 @@ class Bluebat {
         this.y += this.speedY;
         this.cx = this.x - this.centerOffset;
         this.cy = this.y + this.centerOffset;
-        // 下向きでheightを超えたら　上向きで0を下回ったら
         if((0 < this.speedY && height < this.cy + this.w * 0.7 / 2) || (this.speedY < 0 && this.cy - this.w * 0.7 / 2 < 0)) this.speedY *= -1;
         if((0 < this.speedX && width < this.cx + this.w * 0.7 / 2) || (this.speedX < 0 && this.cx - this.w * 0.7 / 2 < 0)) this.speedX *= -1;
 
